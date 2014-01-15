@@ -259,6 +259,8 @@ var NETJS = NETJS|| {};
   // Properties
   NETJS.label.prototype.Id = null;
   NETJS.label.prototype.onClick = null;
+  NETJS.label.prototype.onMouseOver = null;
+  NETJS.label.prototype.onMouseOut = null;
   // Methods
   NETJS.label.prototype.render = function(instanceDoc){
      try{
@@ -307,8 +309,14 @@ var NETJS = NETJS|| {};
         if(typeof (this.onClick) ==='function')
           element.addEventListener("click", this.onClick, false);
          
+        // onMouseOver event
+        if(typeof(this.onMouseOver)==='function')
+          element.addEventListener("mouseover", this.onMouseOver, false);
 
-          
+        // onMouseOut event
+        if(typeof(this.onMouseOut)==='function')
+          element.addEventListener("mouseout",this.onMouseOut, false);
+
         return element; // return DOM element for apply on body         
      }catch(err){
         console.log("Error NETJS : [] - UI not availbe document");

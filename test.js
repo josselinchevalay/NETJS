@@ -14,6 +14,7 @@ label.Padding = "0px 0px 0px 20px";
 var test = new NETJS.label("my Label");
 test.addStyle("background-color", "#ff25ee");
 test.onClick = function(){alert('titi');};
+test.onMouseOut= function(){alert('tutu');};
 
 var test2 = new NETJS.label("my label 2");
 
