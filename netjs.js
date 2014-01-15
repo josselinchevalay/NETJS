@@ -264,6 +264,7 @@ var NETJS = NETJS|| {};
    this._child.add(child);
   };
   NETJS.windows.prototype.render = function(){
+    this._document.body.innerHTML ='';
     for(var element in this._child.toArray()){
         var domElement = this._child.get(element).render(this._document);
         this._document.body.appendChild(domElement);
@@ -653,6 +654,7 @@ var NETJS = NETJS|| {};
   // Properties
   NETJS.listbox.prototype.Data = new NETJS.dictionary();
   NETJS.listbox.prototype.Id =null;
+  NETJS.listbox.prototype.ItemSelectionChange = null
   // Methods 
   NETJS.listbox.prototype.type = function(){
     return this._type;
@@ -721,11 +723,26 @@ var NETJS = NETJS|| {};
             element.appendChild(option);
         }
 
+        /********** Part of event ***************/
+        if(typeof(this.ItemSelectionChange)==='function')
+          element.addEventListener("change", this.ItemSelectionChange, false);
+
+        /*****************************************/
+
       return element;
     }catch(err){
       console.log("Error NETJS : [UI] - listBox document not availbe");
       return false;
     }
+  };
+  NETJS.listbox.prototype.value = function(){
+     if(this._instanceDoc!=null){
+      var element = this._instanceDoc.getElementById(this._name);
+      return element.options[element.selectedIndex].value;
+     }else{
+      console.log("Error NETJS : [UI] - listbox windows must be render for get value");
+      return false;
+     }
   };
   /********** END UI - listBox *********/
 })();

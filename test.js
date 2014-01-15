@@ -25,8 +25,9 @@ var button = new NETJS.button("my button");
 button.addStyle("background-color", "#ff0000");
 
 button.onClick = function(){
-	alert(test2.value());
+	alert(lb.value());
 }
+
 
 
 
