@@ -440,4 +440,101 @@ var NETJS = NETJS|| {};
    this._child.add(child);
   };
   /************ END UI : stackPanel ********/ 
+
+  /************ UI - InputBox ************/
+  NETJS.inputBox = function(name){
+    this._name = name;
+    this._type = "inputBox";
+    this._uiAble = true;
+    this._attributes = new NETJS.dictionary();
+    this._css = new NETJS.dictionary();
+    this._class = new NETJS.list();
+    this._instanceDoc = null;
+    this.Id = name;
+  }
+  // Properties
+  NETJS.inputBox.prototype.Id = null;
+  //Methods
+  NETJS.inputBox.prototype.addAttributes = function(key, value){
+    this._attributes.add(key, value);
+    return true;
+  };
+  NETJS.inputBox.prototype.addStyle = function(key, value){
+    this._css.add(key, value);
+    return true;
+  };
+  NETJS.inputBox.prototype.addClass = function(key){
+    this._class.add(key);
+    return true;
+  };
+  NETJS.inputBox.prototype.type = function(){
+    return this._type;
+  };
+  NETJS.inputBox.prototype.render = function(instanceDoc){
+    this._instanceDoc = instanceDoc;
+      try{
+          var element = instanceDoc.createElement("input");
+          element.type = "text";
+
+          try{  // part for html attributes        
+          if(!this._attributes.isEmpty())
+           {
+             for(var index in this._attributes.toArray()){               
+                  element.setAttribute(index, this._attributes.get(index));                          
+             }
+           }         
+          }
+          catch(err){
+            console.log("Error NETJS : [Label] - UI ->  'Attributes contain an error'");
+            return false;
+          } // end of part for attributes
+
+          try{   // part for css style      
+          if(!this._css.isEmpty())
+           {
+             for(var index in this._css.toArray()){                                
+                  element.style[index] = this._css.get(index);                         
+             }
+           }         
+          }catch(err){
+            console.log("Error NETJS : [Label] - UI -> Label 'Attributes contain an error'");
+            return false;
+          }     // end of par for style
+
+          try{ // part for classes
+            if(!this._class.length()==0)
+             {
+               for(var index in this._class.toArray()){                                
+                    element.className += " "+this._class.get(index);                         
+               }
+             }  
+        }catch(err){
+
+        }// end of part for classes
+
+        if(this.Id != null)
+          element.setAttribute("id", this.Id);
+          return element;
+      }catch(err){
+        console.log("Error NETJS : [UI] - InputBox document not availbe");
+        return false
+      }
+  };
+  NETJS.inputBox.prototype.value = function(){
+
+      if(this._instanceDoc!=null){
+          return this._instanceDoc.getElementById(this._name).value;
+      }else{
+        console.log("Error NETJS : [UI] InputBox windows must render for get value");
+        return false;
+      }
+  }
+  /************ END UI - InputBox*********/
+
+  /************ UI - Button **************/
+  NETJS.button = function(text){
+      this._text = text;
+      
+  };
+  /*********** END UI - Button **********/
 })();
