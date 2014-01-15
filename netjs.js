@@ -1,3 +1,27 @@
+/************************************/
+/*The MIT License (MIT)
+
+Copyright (c) 2014 josselin chevalay
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+/************************************/
+
 'use strict';
 
 var NETJS = NETJS|| {};
@@ -606,6 +630,7 @@ var NETJS = NETJS|| {};
         // onCLick event     
         if(typeof (this.onClick) ==='function')
           element.addEventListener("click", this.onClick, false);
+
         return element;
       }catch(err){
         console.log("Error NETJS : [UI] Button - Document Not avaible ");
@@ -613,4 +638,94 @@ var NETJS = NETJS|| {};
       }
   };
   /*********** END UI - Button **********/
+
+  /********** UI - ListBox *************/
+  NETJS.listbox = function(name){
+    this._name = name;
+    this._instanceDoc = null;
+    this._type = "listbox";
+    this._uiAble = true;
+    this._attributes = new NETJS.dictionary();
+    this._css = new NETJS.dictionary();
+    this._class = new NETJS.list();
+    this.Id = this._name;
+  };
+  // Properties
+  NETJS.listbox.prototype.Data = new NETJS.dictionary();
+  NETJS.listbox.prototype.Id =null;
+  // Methods 
+  NETJS.listbox.prototype.type = function(){
+    return this._type;
+  };
+   NETJS.listbox.prototype.addAttributes = function(key, value){
+    this._attributes.add(key, value);
+    return true;
+  };
+  NETJS.listbox.prototype.addStyle = function(key, value){
+    this._css.add(key, value);
+    return true;
+  };
+  NETJS.listbox.prototype.addClass = function(key){
+    this._class.add(key);
+    return true;
+  };
+  NETJS.listbox.prototype.render = function(instanceDoc){
+    this._instanceDoc = instanceDoc;
+    try{
+      var element = instanceDoc.createElement("select");
+
+      try{  // part for html attributes        
+          if(!this._attributes.isEmpty())
+           {
+             for(var index in this._attributes.toArray()){               
+                  element.setAttribute(index, this._attributes.get(index));                          
+             }
+           }         
+        }
+        catch(err){
+          console.log("Error NETJS : [Label] - UI ->  'Attributes contain an error'");
+          return false;
+        } // end of part for attributes
+        try{   // part for css style      
+          if(!this._css.isEmpty())
+           {
+             for(var index in this._css.toArray()){                                
+                  element.style[index] = this._css.get(index);                         
+             }
+           }         
+        }
+        catch(err){
+          console.log("Error NETJS : [Label] - UI -> Label 'Attributes contain an error'");
+          return false;
+        }     // end of par for style 
+
+
+        try{ // part for classes
+            if(!this._class.length()==0)
+             {
+               for(var index in this._class.toArray()){                                
+                    element.className += " "+this._class.get(index);                         
+               }
+             }  
+        }catch(err){
+
+        }// end of part for classes
+        if(this.Id != null)
+          element.setAttribute("id", this.Id);
+
+        // Apply Datas
+        for(var index in this.Data.toArray()){
+            var option = instanceDoc.createElement("option");
+            option.value = index;
+            option.innerHTML = this.Data.get(index);
+            element.appendChild(option);
+        }
+
+      return element;
+    }catch(err){
+      console.log("Error NETJS : [UI] - listBox document not availbe");
+      return false;
+    }
+  };
+  /********** END UI - listBox *********/
 })();
