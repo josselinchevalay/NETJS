@@ -17,7 +17,11 @@ test2.addStyle("background-color", "#ff0000");
 var test = new NETJS.label("my Label");
 test.addStyle("background-color", "#ff25ee");
 
-test.onClick = function(){
+
+var button = new NETJS.button("my button");
+button.addStyle("background-color", "#ff0000");
+
+button.onClick = function(){
 	alert(test2.value());
 }
 
@@ -25,6 +29,7 @@ test.onClick = function(){
 
 label.addChild(test);
 label.addChild(test2);
+label.addChild(button);
 win.addChild(label);
 
 

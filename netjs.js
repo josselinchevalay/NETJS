@@ -533,8 +533,84 @@ var NETJS = NETJS|| {};
 
   /************ UI - Button **************/
   NETJS.button = function(text){
-      this._text = text;
-      
+    this._text = text;
+    this._type = "button";
+    this._uiAble = true;
+    this._attributes = new NETJS.dictionary();
+    this._css = new NETJS.dictionary();
+    this._class = new NETJS.list();
+    this._instanceDoc = null;
+  };
+  //Properties
+  NETJS.button.prototype.Id = null;
+  // Methods 
+
+  NETJS.button.prototype.type = function(){
+    return this._type;
+  };
+  NETJS.button.prototype.addAttributes = function(key, value){
+    this._attributes.add(key, value);
+    return true;
+  };
+  NETJS.button.prototype.addStyle = function(key, value){
+    this._css.add(key, value);
+    return true;
+  };
+  NETJS.button.prototype.addClass = function(key){
+    this._class.add(key);
+    return true;
+  };
+  NETJS.button.prototype.render = function(instanceDoc){
+      try{
+        var element = instanceDoc.createElement("button");
+        element.innerHTML = this._text;     
+        try{  // part for html attributes        
+          if(!this._attributes.isEmpty())
+           {
+             for(var index in this._attributes.toArray()){               
+                  element.setAttribute(index, this._attributes.get(index));                          
+             }
+           }         
+        }
+        catch(err){
+          console.log("Error NETJS : [Label] - UI ->  'Attributes contain an error'");
+          return false;
+        } // end of part for attributes
+        try{   // part for css style      
+          if(!this._css.isEmpty())
+           {
+             for(var index in this._css.toArray()){                                
+                  element.style[index] = this._css.get(index);                         
+             }
+           }         
+        }
+        catch(err){
+          console.log("Error NETJS : [Label] - UI -> Label 'Attributes contain an error'");
+          return false;
+        }     // end of par for style 
+
+
+        try{ // part for classes
+            if(!this._class.length()==0)
+             {
+               for(var index in this._class.toArray()){                                
+                    element.className += " "+this._class.get(index);                         
+               }
+             }  
+        }catch(err){
+
+        }// end of part for classes
+        if(this.Id != null)
+          element.setAttribute("id", this.Id);
+
+        // onCLick event     
+        if(typeof (this.onClick) ==='function')
+          element.addEventListener("click", this.onClick, false);
+        return element;
+      }catch(err){
+        console.log("Error NETJS : [UI] Button - Document Not avaible ");
+        return false;
+      }
   };
   /*********** END UI - Button **********/
 })();
