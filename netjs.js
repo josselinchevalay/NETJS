@@ -745,4 +745,8 @@ var NETJS = NETJS|| {};
      }
   };
   /********** END UI - listBox *********/
+
+  /********** UI Datagrid      ********/
+  
+  /********** END UI datagrid  ********/
 })();

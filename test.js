@@ -1,31 +1,46 @@
-
-var List = new NETJS.list();
-
+/************************************/
+/*
+* Chat possible avec c'est quelque ligne de codes
+* je pense que je vais y incorporer aussi une possiblité de mise en reseaux
+* avec dépendance avec Socket io et ajax
+* --------------------------------------
+*  Socket IO -> Network.Socket
+*  Ajax -> Network.Ajax
+*/
+/***********************************/
 var win = new NETJS.windows();
 
 var label = new NETJS.stackPanel();
 label.addAttributes("for", "test-input");
 
 label.addClass("test");
-label.Orientation ="horizontal";
-label.Padding = "0px 0px 0px 20px";
-label.addStyle("background-color", "silver");
+//label.Orientation ="horizontal"; // stack panel orientation
+//label.Padding = "0px 0px 0px 20px"; // stack panel 
+label.addStyle("backgroundColor", "silver");
 
 var test2 = new NETJS.inputBox("myField");
-test2.addStyle("background-color", "#ff0000");
+test2.addStyle("backgroundColor", "#ff0000");
 
-var test = new NETJS.label("my Label");
-test.addStyle("background-color", "#ff25ee");
+var test = new NETJS.label("Chat Room");
+test.addStyle("backgroundColor", "#ff25ee");
 
 var lb = new NETJS.listbox("myListBox");
-lb.Data.add("1", "Men");
-lb.Data.add("2", "Women");
+lb.Data.add("men", "Men");
+lb.Data.add("women", "Women");
 
-var button = new NETJS.button("my button");
+var button = new NETJS.button("Sent");
 button.addStyle("background-color", "#ff0000");
 
 button.onClick = function(){
-	alert(lb.value());
+	var text = "";
+	if(lb.value()=="men")
+		text +="hi Mister "+test2.value();
+	else
+		text += "hi lady "+test2.value();
+
+	var textLabel = new NETJS.label(text);
+	label.addChild(textLabel);
+	win.render();
 }
 
 
