@@ -155,6 +155,11 @@ var NETJS = NETJS|| {};
       }      
       return true;
   };
+  NETJS.list.prototype.addRange = function(table){
+    for(var index in table){
+      this._value.push(table[index]);
+    }
+  };
   NETJS.list.prototype.remove = function(value){
       try{
         var index = this._value.indexOf(value);
@@ -758,7 +763,7 @@ var NETJS = NETJS|| {};
     this.Id = this._name;
   };
   // Properties
-  NETJS.datagrid.prototype.DataContext = new NETJS.dictionary();
+  NETJS.datagrid.prototype.DataContext = new NETJS.list();
   NETJS.datagrid.prototype.Id =null;
   NETJS.datagrid.prototype.DataHeader = new NETJS.list();
   // Methods
@@ -783,8 +788,8 @@ var NETJS = NETJS|| {};
         var element = instanceDoc.createElement("table");
           if(this.DataHeader.length().value() >0){// si nous mettons un header
               var tempHead = instanceDoc.createElement("thead"); // nous créons la section head
-              for(var index in this.DataHeader.toArray()){
-                var tempRow = instanceDoc.createElement("tr"); // créeons une ligne dans cette section
+              var tempRow = instanceDoc.createElement("tr"); // créeons une ligne dans cette section
+              for(var index in this.DataHeader.toArray()){                
                 var tempCell = instanceDoc.createElement("th"); // nous y ajoutons des cellules en th
                 tempCell.innerHTML = this.DataHeader.get(index); // on y est met les texte de la liste
                 tempRow.appendChild(tempCell); // on add la cellule dans la ligne
@@ -793,7 +798,31 @@ var NETJS = NETJS|| {};
               element.appendChild(tempHead); // on ajoute la section
           } // fin des header
           if(this.DataContext.length().value()>0){ // si nous avons des valeur
-
+              var tempBody = instanceDoc.createElement("tbody");
+              var tempRow = instanceDoc.createElement("tr");
+              for(var index in this.DataContext.toArray()){// Pour chaque entrée de la liste
+                if(typeof(this.DataContext.get(index))==='string'){
+                  var tempCell = instanceDoc.createElement("td");
+                  tempCell.innerHTML = this.DataContext.get(index);
+                  tempRow.appendChild(tempCell);
+                }else if(typeof(this.DataContext.get(index))==='object' && !this.DataContext.get(index).hasOwnProperty('_type')){
+                  var table = this.DataContext.get(index)
+                  for(var subIndex in table){
+                    var tempCell = instanceDoc.createElement("td");
+                    tempCell.innerHTML = table[subIndex];
+                    tempRow.appendChild(tempCell);
+                  }
+                }else if(typeof(this.DataContext.get(index))==='object' && this.DataContext.get(index).hasOwnProperty('_type')){ 
+                  var table = this.DataContext.get(index).toArray();
+                  for(var subIndex in table){
+                    var tempCell = instanceDoc.createElement("td");
+                    tempCell.innerHTML = table[subIndex];
+                    tempRow.appendChild(tempCell);
+                  }
+                }               
+              }
+              tempBody.appendChild(tempRow);
+              element.appendChild(tempBody);
           }
         return element;
     }catch(err){
