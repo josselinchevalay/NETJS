@@ -747,6 +747,59 @@ var NETJS = NETJS|| {};
   /********** END UI - listBox *********/
 
   /********** UI Datagrid      ********/
-  
+  NETJS.datagrid = function(id){
+    this._name = name;
+    this._instanceDoc = null;
+    this._type = "datagrid";
+    this._uiAble = true;
+    this._attributes = new NETJS.dictionary();
+    this._css = new NETJS.dictionary();
+    this._class = new NETJS.list();
+    this.Id = this._name;
+  };
+  // Properties
+  NETJS.datagrid.prototype.DataContext = new NETJS.dictionary();
+  NETJS.datagrid.prototype.Id =null;
+  NETJS.datagrid.prototype.DataHeader = new NETJS.list();
+  // Methods
+  NETJS.datagrid.prototype.type = function(){
+    return this._type;
+  };
+  NETJS.datagrid.prototype.addAttributes = function(key, value){
+    this._attributes.add(key, value);
+    return true;
+  };
+  NETJS.datagrid.prototype.addStyle = function(key, value){
+    this._css.add(key, value);
+    return true;
+  };
+  NETJS.datagrid.prototype.addClass = function(key){
+    this._class.add(key);
+    return true;
+  };
+  NETJS.datagrid.prototype.render = function(instanceDoc){
+    this._instanceDoc = instanceDoc;
+    try{
+        var element = instanceDoc.createElement("table");
+          if(this.DataHeader.length().value() >0){// si nous mettons un header
+              var tempHead = instanceDoc.createElement("thead"); // nous créons la section head
+              for(var index in this.DataHeader.toArray()){
+                var tempRow = instanceDoc.createElement("tr"); // créeons une ligne dans cette section
+                var tempCell = instanceDoc.createElement("th"); // nous y ajoutons des cellules en th
+                tempCell.innerHTML = this.DataHeader.get(index); // on y est met les texte de la liste
+                tempRow.appendChild(tempCell); // on add la cellule dans la ligne
+                tempHead.appendChild(tempRow); // on add la ligne dans la section
+              }
+              element.appendChild(tempHead); // on ajoute la section
+          } // fin des header
+          if(this.DataContext.length().value()>0){ // si nous avons des valeur
+
+          }
+        return element;
+    }catch(err){
+      console.log("Error  NETJS : [UI] - datagrid document not avaible");
+      return false;
+    }
+  }
   /********** END UI datagrid  ********/
 })();

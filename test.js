@@ -31,6 +31,17 @@ lb.Data.add("women", "Women");
 var button = new NETJS.button("Sent");
 button.addStyle("background-color", "#ff0000");
 
+var buttonClear = new NETJS.button("Clear");
+buttonClear.addStyle("background-color", "#ff0000");
+
+
+var conversation = new NETJS.stackPanel();
+
+
+var datag = new NETJS.datagrid("test-datagrid");
+datag.DataHeader.add("nom");
+
+
 button.onClick = function(){
 	var text = "";
 	if(lb.value()=="men")
@@ -39,19 +50,24 @@ button.onClick = function(){
 		text += "hi lady "+test2.value();
 
 	var textLabel = new NETJS.label(text);
-	label.addChild(textLabel);
+	conversation.addChild(textLabel);
 	win.render();
 }
 
+buttonClear.onClick = function(){
+	console.log("toto");
+	conversation._child = new NETJS.list();
+};
 
 
 
+label.addChild(datag);
 label.addChild(test);
 label.addChild(test2);
 label.addChild(lb);
 label.addChild(button);
-
-
+label.addChild(conversation);
+label.addChild(buttonClear);
 
 win.addChild(label);
 
