@@ -63,6 +63,7 @@ button.onClick = function(){
 buttonClear.onClick = function(){
 	console.log("toto");
 	conversation._child = new NETJS.list();
+	win.render();
 };
 
 
@@ -71,9 +72,17 @@ label.addChild(datag);
 label.addChild(test);
 label.addChild(test2);
 label.addChild(lb);
-label.addChild(button);
+
+
+var stack2 = new NETJS.stackPanel("button-panel");
+stack2.Orientation ="horizontal";
+
+stack2.addChild(button);
+stack2.addChild(buttonClear);
+
+label.addChild(stack2);
 label.addChild(conversation);
-label.addChild(buttonClear);
+
 
 win.addChild(label);
 
