@@ -43,7 +43,9 @@ datag.DataHeader.add("nom");
 datag.DataHeader.add("prénom");
 //datag.DataContext.add(["Chevalay","josselin"]);
 var t = new NETJS.list();
-t.addRange(["Chevalay","josselin"]);
+t.add();
+t.add(["Oudin", "Floraine"]);
+t.add(["Gates", "Bill"]);
 datag.DataContext.add(t);
 
 button.onClick = function(){

@@ -800,29 +800,40 @@ var NETJS = NETJS|| {};
           } // fin des header
           if(this.DataContext.length().value()>0){ // si nous avons des valeur
               var tempBody = instanceDoc.createElement("tbody");
-              var tempRow = instanceDoc.createElement("tr");
               for(var index in this.DataContext.toArray()){// Pour chaque entrée de la liste
                 if(typeof(this.DataContext.get(index))==='string'){
+                  var tempRow = instanceDoc.createElement("tr");
                   var tempCell = instanceDoc.createElement("td");
                   tempCell.innerHTML = this.DataContext.get(index);
                   tempRow.appendChild(tempCell);
+                  tempBody.appendChild(tempRow);
                 }else if(typeof(this.DataContext.get(index))==='object' && !this.DataContext.get(index).hasOwnProperty('_type')){
-                  var table = this.DataContext.get(index)
-                  for(var subIndex in table){
-                    var tempCell = instanceDoc.createElement("td");
-                    tempCell.innerHTML = table[subIndex];
-                    tempRow.appendChild(tempCell);
+                  var tableRow = this.DataContext.get(index);
+                  for(var rowIndex in tableRow){
+                    var tableCell = tableRow[rowIndex];
+                    var tempRow = instanceDoc.createElement("tr");
+                    for(var cellIndex in tableCell){
+                      var tempCell = instanceDoc.createElement("td");
+                      tempCell.innerHTML = tableCell[cellIndex];
+                      tempRow.appendChild(tempCell);
+                    }
+                    tempBody.appendChild(tempRow);
                   }
                 }else if(typeof(this.DataContext.get(index))==='object' && this.DataContext.get(index).hasOwnProperty('_type')){ 
-                  var table = this.DataContext.get(index).toArray();
-                  for(var subIndex in table){
-                    var tempCell = instanceDoc.createElement("td");
-                    tempCell.innerHTML = table[subIndex];
-                    tempRow.appendChild(tempCell);
+                  var tableRow = this.DataContext.get(index).toArray();
+                  for(var rowIndex in tableRow){
+                    var tableCell = tableRow[rowIndex];
+                    var tempRow = instanceDoc.createElement("tr");
+                    for(var cellIndex in tableCell){
+                      var tempCell = instanceDoc.createElement("td");
+                      tempCell.innerHTML = tableCell[cellIndex];
+                      tempRow.appendChild(tempCell);
+                    }
+                    tempBody.appendChild(tempRow);
                   }
                 }               
               }
-              tempBody.appendChild(tempRow);
+              
               element.appendChild(tempBody);
           }
 
