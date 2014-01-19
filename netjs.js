@@ -753,14 +753,14 @@ var NETJS = NETJS|| {};
 
   /********** UI Datagrid      ********/
   NETJS.datagrid = function(id){
-    this._name = name;
+    this._name = id;
     this._instanceDoc = null;
     this._type = "datagrid";
     this._uiAble = true;
     this._attributes = new NETJS.dictionary();
     this._css = new NETJS.dictionary();
     this._class = new NETJS.list();
-    this.Id = this._name;
+    this.Id = id;
   };
   // Properties
   NETJS.datagrid.prototype.DataContext = new NETJS.list();
@@ -786,6 +786,7 @@ var NETJS = NETJS|| {};
     this._instanceDoc = instanceDoc;
     try{
         var element = instanceDoc.createElement("table");
+        element.Id = this.Id;
           if(this.DataHeader.length().value() >0){// si nous mettons un header
               var tempHead = instanceDoc.createElement("thead"); // nous créons la section head
               var tempRow = instanceDoc.createElement("tr"); // créeons une ligne dans cette section
@@ -824,6 +825,10 @@ var NETJS = NETJS|| {};
               tempBody.appendChild(tempRow);
               element.appendChild(tempBody);
           }
+
+          if(this.Id != null)
+            element.setAttribute("id", this.Id);
+
         return element;
     }catch(err){
       console.log("Error  NETJS : [UI] - datagrid document not avaible");
