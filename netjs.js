@@ -44,6 +44,9 @@ var NETJS = NETJS|| {};
   NETJS.string.prototype.type = function(){
   		return this._type;
   }
+  NETJS.string.prototype.__toString = function(){
+    return this._value;
+  }
   /****************End string ***************/
 
   /**************** int   ********************/
